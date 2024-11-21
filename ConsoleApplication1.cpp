@@ -18,13 +18,13 @@ int main() {
 	clsDate Date4(250, 2022);
 	cout << "Date by order day through Parameterized constructor : [4] "; Date4.Print();
 
-	/*Date1.PrintMonthCalender();
+	Date1.PrintMonthCalender();
 
 	Date2.PrintMonthCalender();
 
 	Date3.PrintMonthCalender();
 
-	Date4.PrintMonthCalender();*/
+	Date4.PrintMonthCalender();
 
 	cout << "---------------\n";
 
