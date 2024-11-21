@@ -1,6 +1,7 @@
+//this is .cpp file where the code of class date is executed.
 #include <iostream>
 #include <string>
-#include "clsDate.h"
+#include "clsDate.h"//include clsDate class.
 
 using namespace std;
 
