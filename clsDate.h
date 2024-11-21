@@ -1,4 +1,4 @@
-﻿
+//this is date class.﻿
 #pragma once
 #pragma warning(disable : 4996)
 
