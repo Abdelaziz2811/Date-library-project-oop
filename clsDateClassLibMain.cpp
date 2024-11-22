@@ -1,8 +1,10 @@
 //this is .cpp file where the code of class clsdate is executed.
 #include <iostream>
 #include <string>
-#include "clsDate.h"//this class is exists in this repo and its name is "clsDate.h"
-#include "clsPeriod.h"//this class is exists in this repo and its name is "clsPeriod.h"
+#include "clsDate.h" /*this class is exists in this repo and its name is "clsDate.h",
+and its path "https://github.com/Abdelaziz2811/Date-library-project-oop/blob/main/clsDate.h"*/
+#include "clsPeriod.h" /*this class is exists in this repo and its name is "clsPeriod.h",
+and its path "https://github.com/Abdelaziz2811/Date-library-project-oop/blob/main/clsPeriod.h*/
 
 using namespace std;
 
