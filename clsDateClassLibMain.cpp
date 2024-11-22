@@ -1,11 +1,16 @@
 //this is .cpp file where the code of class clsdate is executed.
 #include <iostream>
 #include <string>
-#include "clsDate.h"
+#include "clsDate.h"//this class is exists in this repo and its name is "clsDate.h"
+#include "clsPeriod.h"//this class is exists in this repo and its name is "clsPeriod.h"
 
 using namespace std;
 
 int main() {
+
+	cout << "---------------\n";
+	cout << "Dates Part : \n";
+	cout << "---------------\n";
 
 	clsDate Date1;
 	cout << "System Date through default constructor : [1] "; Date1.Print();
@@ -313,6 +318,47 @@ int main() {
 		cout << "Date 1 and Date 2 are equal\n";
 	else 
 		cout << "Date 1 is after Date 2\n";
+
+	cout << "---------------\n";
+	cout << "Periods Part : \n";
+	cout << "---------------\n";
+
+	clsPeriod Period1(Date1, Date2);
+	clsPeriod Period2(Date4, Date3);
+
+	cout << "---------------\n";
+
+	cout << "Period 1 : \n";        
+	Period1.Print();
+
+	cout << "---------------\n";
+
+	cout << "Period 2 : \n";
+	Period2.Print();
+
+	cout << "---------------\n";
+
+	if (Period1.IsOverLapPeriod(Period2))
+		cout << "Yes, Period 1 and Period 2 are overlap\n";
+	else
+		cout << "No, Period 1 and Period 2 are Not overlap\n";
+
+	cout << "---------------\n";
+
+	cout << "Period Length : " << Period1.PeriodLengthInDays(true) << endl;//true for include last day
+
+	cout << "---------------\n";
+
+	if (Period1.IsDateWithinPeriod(Date3))
+		cout << "Yes, date 3 is within Period 1\n";
+	else 
+		cout << "No, date 3 is Not within Period 1\n";
+
+	cout << "---------------\n";
+
+	cout << "Count overlap days : " << Period1.CountOvelapDays(Period2) << endl;//true for include last day
+
+	cout << "---------------\n";
 
 	return 0;
 }
