@@ -8,7 +8,8 @@
 #include <string>
 #include <vector>
 #include <ctime>
-#include "clsString.h"
+#include "clsString.h"/*include clsString.h is necessary because we used some of its methods,
+it class is available on my github "https://github.com/Abdelaziz2811/string-library-project-oop"*/
 
 using namespace std;
 
