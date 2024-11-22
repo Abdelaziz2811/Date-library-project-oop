@@ -1,7 +1,6 @@
-//this is .cpp file where the code of class date is executed.
 #include <iostream>
 #include <string>
-#include "clsDate.h"//include clsDate class.
+#include "clsDate.h"
 
 using namespace std;
 
@@ -13,11 +12,11 @@ int main() {
 	clsDate Date2("12/3/2033");
 	cout << "string Date (dd/mm/yyyy) through Parameterized constructor : [2] "; Date2.Print();
 
-	clsDate Date3(25, 1, 2025);
+	clsDate Date3(25, 1, 2026);
 	cout << "Date through Parameterized constructor that receives Dd and Mm and Yyyy as short : [3] "; Date3.Print();
 
-	clsDate Date4(250, 2022);
-	cout << "Date by order day through Parameterized constructor : [4] "; Date4.Print();
+	clsDate Date4(250, 2005);
+	cout << "Date by order day in year through Parameterized constructor : [4] "; Date4.Print();
 
 	Date1.PrintMonthCalender();
 
@@ -27,9 +26,15 @@ int main() {
 
 	Date4.PrintMonthCalender();
 
+	Date1.PrintYaerCalender();
+
 	cout << "---------------\n";
 
 	cout << "Days from beginig of the year is : for date [4] : " << Date4.NumberOfDaysFromBeginningOfTheYear() << endl;
+
+	cout << "---------------\n";
+
+	cout << "My Age In Days : " << clsDate::CalculateMyAgeInDays(Date4) << endl;
 
 	cout << "---------------\n";
 
@@ -274,6 +279,10 @@ int main() {
 
 	cout << "---------------\n";
 
+	cout << "Business days between two dates -> (Date1 To Date2) : " << Date1.CalculateBusinessDays(Date2) << endl;
+
+	cout << "---------------\n";
+
 	//only business days counts as vacation days.
 	cout << "Vacation days between two dates -> (Date1 To Date3) : " << Date1.CalculateVacationDays(Date3) << endl;
 
@@ -296,6 +305,13 @@ int main() {
 	cout << "Date Format [dd/:-)/mm/:-)/yyyy] : " << Date1.SetDateFormat("dd/:-)/mm/:-)/yyyy") << endl;
 
 	cout << "---------------\n";
+
+	if (Date1.CompareDates(Date2) == clsDate::enCompareDates::Before)
+		cout << "Date 1 is before Date 2\n";
+	else if (Date1.CompareDates(Date2) == clsDate::enCompareDates::Equal)
+		cout << "Date 1 and Date 2 are equal\n";
+	else 
+		cout << "Date 1 is after Date 2\n";
 
 	return 0;
 }
