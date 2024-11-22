@@ -1,4 +1,6 @@
-//this is date class.﻿
+//abdelaziz bahoumi
+
+//this is the clsdate class that contains all methods related to date.
 #pragma once
 #pragma warning(disable : 4996)
 
@@ -6,6 +8,7 @@
 #include <string>
 #include <vector>
 #include <ctime>
+#include "clsString.h"
 
 using namespace std;
 
@@ -16,60 +19,23 @@ private:
 	short Month;
 	short Year;
 
-	string _Date;
-	short _OrderDay;
-
-	time_t t = time(0);
-	tm* now = localtime(&t);
-
-	clsDate StringDateTo_D_M_Y() {
-
-		short pos = 0;
-		string Word = "";
-		string Delim = "/";
-		vector <short> vDate;
-
-		while ((pos = _Date.find(Delim)) != _Date.npos) {
-
-			Word = _Date.substr(0, pos);
-			if (Word != "") {
-
-				vDate.push_back(stoi(Word));
-			}
-			_Date.erase(0, pos + Delim.length());
-		}
-		if (_Date != "") {
-
-			vDate.push_back(stoi(_Date));
-		}
-
-		//intialize date by date that sent on string type(day/month/year) in this current object for use.
-
-		clsDate Date;
-
-		Date.Day = vDate[0];
-		Date.Month = vDate[1];
-		Date.Year = vDate[2];
-
-		return Date;
-	}
-
 public:
 	clsDate() {
+
+		time_t t = time(0);
+		tm* now = localtime(&t);
 
 		Day = now->tm_mday;
 		Month = now->tm_mon + 1;
 		Year = now->tm_year + 1900;
 	}
-	clsDate(string sDate) {/*use this order 'mm / dd / yyyy' in intialization on main function to avoid bugs */
+	clsDate(string sDate) {/* use this order 'mm / dd / yyyy' in intialization on main function to avoid bugs */
 
-		_Date = sDate;
+		vector <string> vDate = clsString::SplitString(sDate, "/");
 
-		clsDate Date = StringDateTo_D_M_Y();
-
-		Day = Date.Day;
-		Month = Date.Month;
-		Year = Date.Year;
+		Day = stoi(vDate[0]);
+		Month = stoi(vDate[1]);
+		Year = stoi(vDate[2]);
 	}
 	clsDate(short Day,short Month,short Year) {
 
@@ -77,25 +43,37 @@ public:
 		this->Month = Month;
 		this->Year = Year;
 	}
-	clsDate(short Day, short Year) {
+	clsDate(short DayOrder, short Year) {
 
-		_OrderDay = Day;
-		this->Year = Year;
+		clsDate Date = GetDateFromDayOrderInYear(Year, DayOrder);
 
-		clsDate Date = GetDateFromDayOrderInYear(Year, _OrderDay);
-
-		//intialize day and month by day order in this current object.
+		//this will construct a date order in year.
 		this->Day = Date.Day;
 		this->Month = Date.Month;
+		this->Year = Date.Year;
 	}
 
+	void SetDay(short Day) {
+
+		this->Day = Day;
+	}
 	short GetDay() {
 
 		return Day;
 	}
+
+	void SetMonth(short Month) {
+
+		this->Month = Month;
+	}
 	short GetMonth() {
 
 		return Month;
+	}
+
+	void SetYear(short Year) {
+
+		this->Year = Year;
 	}
 	short GetYear() {
 
@@ -104,12 +82,26 @@ public:
 
 	void Print() {
 		
-		cout << Day << "/" << Month << "/" << Year << " " << endl;
+		cout << DateToString() << endl;
+	}
+
+	static string DateToString(clsDate Date) {
+
+		return to_string(Date.Day) + "/" + to_string(Date.Month) + "/" + to_string(Date.Year);
+	}
+	string DateToString() {
+
+		return DateToString(*this);
 	}
 
 	static bool IsLeapYear(int Year) {
 
 		return (Year % 400 == 0 || (Year % 4 == 0 && Year % 100 != 0));
+	}
+
+	bool IsLeapYear() {
+
+		return IsLeapYear(Year);
 	}
 
 	static short NumberOfDaysInMonth(short Year, short Month) {
@@ -144,6 +136,20 @@ public:
 				break;
 			}
 		}
+		return Date;
+	}
+
+	static clsDate GetSystemDate() {
+
+		clsDate Date;
+
+		time_t t = time(0);
+		tm* now = localtime(&t);
+
+		Date.Year = now->tm_year + 1900;
+		Date.Month = now->tm_mon + 1;
+		Date.Day = now->tm_mday;
+
 		return Date;
 	}
 
@@ -371,20 +377,6 @@ public:
 	short GetDiffrenceDays(clsDate Date2, bool IncludingEndDay = false) {
 
 		return GetDiffrenceDays(*this, Date2, IncludingEndDay);
-	}
-
-	static clsDate GetSystemDate() {
-
-		clsDate Date;
-
-		time_t t = time(0);
-		tm* now = localtime(&t);
-
-		Date.Year = now->tm_year + 1900;
-		Date.Month = now->tm_mon + 1;
-		Date.Day = now->tm_mday;
-
-		return Date;
 	}
 
 	void SwapDates(clsDate& Date1, clsDate& Date2) {
@@ -906,6 +898,29 @@ public:
 		return DaysUntilEndOfYear(*this);
 	}
 
+	static short CalculateMyAgeInDays(clsDate DateOfBirth) {
+
+		return GetDiffrenceDays(DateOfBirth, GetSystemDate());
+	}
+
+	static short CalculateBusinessDays(clsDate DateFrom, clsDate DateTo) {
+
+		short BusinessDays = 0;
+
+		while (!IsDate1EqualDate2(DateFrom, DateTo)) {
+
+			if (IsBusinessDay(DateFrom))
+				BusinessDays++;
+
+			DateFrom = IncreaseDateByOneDay(DateFrom);
+		}
+		return BusinessDays;
+	}
+	short CalculateBusinessDays(clsDate DateTo) {
+
+		return CalculateBusinessDays(*this, DateTo);
+	}
+
 	//only business days counts as vacation days.
 	static short CalculateVacationDays(clsDate DateFrom, clsDate DateTo) {
 
@@ -1007,6 +1022,23 @@ public:
 	string SetDateFormat(string DateFormat = "dd/mm/yyyy") {
 
 		return SetDateFormat(*this, DateFormat);
+	}
+
+	static enum enCompareDates { Before = -1, Equal = 0, After = 1 };
+
+	static enCompareDates CompareDates(clsDate Date, clsDate Date2) {
+
+		if (IsDate1BeforeDate2(Date, Date2))
+			return enCompareDates::Before;
+
+		if (IsDate1EqualDate2(Date, Date2))
+			return enCompareDates::Equal;
+
+		return enCompareDates::After;
+	}
+	enCompareDates CompareDates(clsDate Date2) {
+
+		return CompareDates(*this, Date2);
 	}
 };
 
